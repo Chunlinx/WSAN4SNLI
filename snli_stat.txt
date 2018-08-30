@@ -1,0 +1,22 @@
+The whole data set including train/dev/test sets.
+
+sent1: 
+max length: 78	mean length: 12.9
+
+sent2:
+max length: 56	mean length: 7.4
+
+
+After cleaning the sample with label "-", I get 549367 train samples, 9842 dev samples and 9824 test samples.
+
+vocabulary size: 57323 (including padidng 0)
+Using pre-trained word embeddings as the initial values of embedding matrix, I get a hit rate of 0.456
+
+
+warning: word dropout is not suitable for SNLI data set.
+When using it, the test accuracy is only 0.654.
+When discarding it , the test accuracy is 0.755.
+
+Dropout: 0.7, delta, 1e-3: 0.780 
+Dropout: 0.5, delta, 1e-3: 0.790
+Dropout: 0.5, 300-d lstm, delta, 1e-3: 0.780 效果不理想

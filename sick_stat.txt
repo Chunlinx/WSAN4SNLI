@@ -1,0 +1,9 @@
+sentenceA:
+max length: 30, average length: 9.72
+
+sentenceB:
+max length: 32, average length: 9.52
+
+train/dev/test samples: 4500, 500, 4927
+
+vocabulary size: 2461(including padding 0)
