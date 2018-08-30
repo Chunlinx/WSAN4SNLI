@@ -9,6 +9,7 @@ import time
 import os
 import math
 import sys
+import utils
 from scipy.stats import spearmanr, pearsonr
 np.random.seed(1234567)
 # os.environ["CUDA_VISIBLE_DEVICES"] = "1"
@@ -247,64 +248,24 @@ def validate_or_test(session, model, data, batch_size):
     return average_loss, sp, pe, mse_
 
 
-def load_snli_data():
-    data_path = "../SNLI/processed_snli.pkl"
-    # 没有额外划分验证集，从训练集中随机抽出一小部分作为验证集,这里按 49000/4570 的样本数进行划分
-    f = open(data_path, 'rb')
-    data = pkl.load(f)
-    f.close()
 
-    train = data["train"]
-    dev = data["dev"]
-    test = data["test"]
-    word2idx = data["voc"]
-
-    return train, dev, test, word2idx
-
-
-def load_sick_data():
-    data_path = "../SICK/processed_sick.pkl"
-    # 没有额外划分验证集，从训练集中随机抽出一小部分作为验证集,这里按 49000/4570 的样本数进行划分
-    f = open(data_path, 'rb')
-    data = pkl.load(f)
-    f.close()
-
-    train = data["train"]
-    dev = data["dev"]
-    test = data["test"]
-    word2idx = data["voc"]
-
-    return train, dev, test, word2idx
 
 
 if __name__ == "__main__":
-    train_data, dev_data, test_data, word2idx = load_sick_data()
-    # get_word_emb(word2idx)
-    # word_emb=get_pretrained_embedding("../SNLI/embedding_matrix.pkl", voc_size=57323)
-    word_emb=get_pretrained_embedding("../SICK/embedding_matrix.pkl", voc_size=2461)
+    train_data, dev_data, test_data, word2idx = utils.load_snli_data()
+    word_emb=get_pretrained_embedding("../SNLI/embedding_matrix.pkl", voc_size=57323)
 
     # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.4)
     # sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
-    # model = models.SPM(word_emb=get_pretrained_embedding("embedding_matrix.pkl", voc_size=84598))
+
     sess = tf.Session()
-    CONFIG = {"max_sentence_length1": 30,  
-              "max_sentence_length2": 32,  # 如果有模型单独需要一些配置信息的话直接放上去就行了
-              "emb_dim": 300,
-              "voc_size": 2461,
-              "preprocess": "lstm",
-              "ave_mode": "window-sa",      # "sa", "window-sa", "gated-window-sa"
-              "nb_classes": 5,
-              "lr": 0.004,
-              "word_emb": word_emb,
-              "lstm_dim": 300
-              }
+
+    config = utils.load_config_from_file("config",main_key="snli")
+    config = utils.load_config_from_file("config", main_key="train_snli", config=config)
+    config["word_emb"] = word_emb
 
     model = models.WSAN(config_=CONFIG)
     sess.run(tf.global_variables_initializer())
-
-    nb_epoches = 100
-    lr_decay = 0.8
-    decay_start = 5
 
     # best_accuracy = [0.0, 0.0]
     best_valid_corr = []

@@ -1,5 +1,5 @@
 # coding: utf-8
-# author: haung ting
+# author: huang ting
 # created time: 2018-04-28-20:44
 import numpy as np
 import pickle as pkl
@@ -95,7 +95,6 @@ def read_sick_file(file_path):
 
 
 def map2idx_sequence(sentences, global_voc, max_length):
-	#  输入为sentence list，每一条sentecne以word list的形式存在，每一个列表的长度不同，最长为76
 	nb_samples = len(sentences)
 	array_x = np.zeros([nb_samples, max_length], dtype=int)
 	for i in range(nb_samples):

@@ -1,0 +1,27 @@
+[snli]
+max_sentence_length1    =   78
+max_sentence_length2    =   56
+emb_dim     =   300
+voc_size    =   57323
+preprocess  =   lstm
+ave_mode    =   wsan
+nb_classes  =   5
+lr          =   0.001
+lstm_dim    =   300
+
+[sick]
+max_sentence_length1    =   30
+max_sentence_length2    =   32
+emb_dim     =   300
+voc_size    =   2461
+preprocess  =   lstm
+ave_mode    =   wsan
+nb_classes  =   5
+lr          =   0.001
+lstm_dim    =   300
+
+[train_snli]
+nb_epoches  =   10
+lr_decay    =   0.8
+decay_start =   3
+[general]
